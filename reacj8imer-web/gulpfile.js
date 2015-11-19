@@ -5,16 +5,27 @@ var source = require('vinyl-source-stream');
 var browserify = require('browserify');
 
 
-gulp.task("build-js", function(){
+gulp.task("build-jsx", function(){
     return browserify({entries: 'src/app.jsx', extensions: ['.jsx'], debug: true})
         .transform('babelify', {presets: ['react']})
         .bundle()
-        .pipe(source('bundle.js'))
+        .pipe(source('bundle-jsx.js'))
         .pipe(gulp.dest('dist'));
 });
 
-gulp.task("watch-js", function(){
-    gulp.watch('src/*.jsx', ['build-js']);
+gulp.task('build-js', function(){
+    return browserify({entries: 'src/app.js', extensions: ['.js'], debug: true})
+        .transform('babelify', {presets: ['es2015']})
+        .bundle()
+        .pipe(source('bundle.js'))
+        .pipe(gulp.dest('dist'))
+        ;
 });
 
-gulp.task('default', ['watch-js']);
+
+gulp.task("watch", function(){
+    gulp.watch('src/*.jsx', ['build-jsx']);
+    gulp.watch('src/*.js', ['build-js']);
+});
+
+gulp.task('default', ['watch']);
