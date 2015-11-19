@@ -12,3 +12,7 @@ gulp.task("build-js", function(){
         .pipe(source('bundle.js'))
         .pipe(gulp.dest('dist'));
 });
+
+gulp.task("watch-js", function(){
+    gulp.watch('src/*.jsx', ['build-js']);
+});
